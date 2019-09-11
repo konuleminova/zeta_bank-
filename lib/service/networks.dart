@@ -179,7 +179,7 @@ class Networks {
       print(response.toString());
       print("konul" + response.statusCode.toString());
       if (response.statusCode == 200) {
-        print(response.data);
+       return false;
       } else {
         return null;
       }

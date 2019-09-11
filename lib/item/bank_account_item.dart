@@ -17,6 +17,7 @@ class BankAccountItemWidget extends StatefulWidget {
 
 class BankAccountItemState extends State<BankAccountItemWidget> {
   BankAccountItem item;
+  bool status = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +43,27 @@ class BankAccountItemState extends State<BankAccountItemWidget> {
                 ? SizedBox(
                     width: 20,
                   )
-                : RaisedButton(
-                    onPressed: () {
-                      // showMaterialDialog(context);
-                      Networks.activateAccount(item.id, context);
-                    },
-                    color: Colors.lightBlue,
-                    disabledColor: Colors.lightBlue,
-                    child: Text(
-                      "Active",
-                      style: TextStyle(color: Colors.white),
-                    )),
+                : !status
+                    ? RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            status = true;
+                          });
+                          Future<dynamic> s =
+                              Networks.activateAccount(item.id, context);
+                          s.then((on) {
+                            status=on;
+                          });
+                        },
+                        color: Colors.lightBlue,
+                        disabledColor: Colors.lightBlue,
+                        child: Text(
+                          "Active",
+                          style: TextStyle(color: Colors.white),
+                        ))
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
             flex: 1,
           )
         ],

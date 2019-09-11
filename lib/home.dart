@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
-  int counter;
+  String counter=null;
   String _homeScreenText = "Waiting for token...";
   String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -21,9 +21,12 @@ class HomeState extends State<HomePage> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+        _messageText = "Push Messaging message: $message";
+
+        print(counter);
         setState(() {
-          _messageText = "Push Messaging message: $message";
-          counter = message['notification']['data']['unPaidBillCount'];
+          counter = message['data']['unPaidBillCount'];
+         print(counter);
         });
 
 //        showDialog(
@@ -183,7 +186,7 @@ class HomeState extends State<HomePage> {
                               ),
                               alignment: Alignment.topRight,
                             ),
-                            counter != 0
+                            counter != null
                                 ? new Positioned(
                                     right: 0,
                                     top: 0,
@@ -198,7 +201,7 @@ class HomeState extends State<HomePage> {
                                         minHeight: 20,
                                       ),
                                       child: Text(
-                                        '$counter',
+                                        counter,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -212,7 +215,7 @@ class HomeState extends State<HomePage> {
                         ),
                         onTap: () {
                           setState(() {
-                            counter = 0;
+                            counter = null;
                           });
                           Navigator.pushNamed(context, "/my_bills");
                         },

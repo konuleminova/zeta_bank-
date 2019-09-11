@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "127726891630",
+    "firebase_url": "https://zetabank-b65e3.firebaseio.com",
+    "project_id": "zetabank-b65e3",
+    "storage_bucket": "zetabank-b65e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127726891630:android:92a4a906e1cb552a",
+        "android_client_info": {
+          "package_name": "com.vrgsoft.zeta_bank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127726891630-528m5f9c9c7v3ttnv5ar9cbro4lsfsb5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS0lxZlbJ5dn2CkCSpcRBKKvQtuj-46cY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127726891630-528m5f9c9c7v3ttnv5ar9cbro4lsfsb5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127726891630-b13rij8u7mtoesa3ou288sn43flapftt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vrgsoft.zetaBank"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

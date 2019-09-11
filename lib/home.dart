@@ -10,41 +10,43 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
-
-  int counter = 2;
+  int counter;
   String _homeScreenText = "Waiting for token...";
   String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
         setState(() {
           _messageText = "Push Messaging message: $message";
+          counter = message['notification']['data']['unPaidBillCount'];
         });
-        print("onMessage: $message");
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: ListTile(
-                title: Text(message['notification']['title']),
-                subtitle: Text(message['data']['mobilePushId']),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Close')),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Confirm',style: TextStyle(color: Colors.white),),
-                )
-              ],
-            ));
+
+//        showDialog(
+//            context: context,
+//            builder: (context) => AlertDialog(
+//              content: ListTile(
+//                title: Text(message['notification']['title']),
+//                subtitle: Text(message['notific']['mobilePushId']),
+//              ),
+//              actions: <Widget>[
+//                FlatButton(
+//                    onPressed: () {
+//                      Navigator.pop(context);
+//                    },
+//                    child: Text('Close')),
+//                RaisedButton(
+//                  onPressed: () {
+//                    Navigator.pop(context);
+//                  },
+//                  child: Text('Confirm',style: TextStyle(color: Colors.white),),
+//                )
+//              ],
+//            ));
       },
       onLaunch: (Map<String, dynamic> message) async {
         setState(() {

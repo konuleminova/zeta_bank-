@@ -29,7 +29,7 @@ class HomeState extends State<HomePage> {
             builder: (context) => AlertDialog(
               content: ListTile(
                 title: Text(message['notification']['title']),
-                subtitle: Text(message['notification']['body']),
+                subtitle: Text(message['data']['mobilePushId']),
               ),
               actions: <Widget>[
                 FlatButton(

@@ -14,14 +14,17 @@ class Networks {
   static String LOGIN_ENDPOINT = "/Auth/Login/WithoutSmsOtp";
   static String CHECK_ENDPOINT = "/Auth/SmsOtps/";
 
-  static dynamic login(
-      String username, String password, String deviceToken,BuildContext context) async {
+  static dynamic login(String username, String password, String deviceToken,
+      BuildContext context) async {
     String LOGIN = BASE_URL + LOGIN_ENDPOINT;
     try {
       Response response;
       Dio dio = new Dio();
-      response = await dio
-          .post(LOGIN, data: {"loginId": username, "mobilePinCode": password,"deviceToken":deviceToken});
+      response = await dio.post(LOGIN, data: {
+        "loginId": username,
+        "mobilePinCode": password,
+        "deviceToken": deviceToken
+      });
       if (response.statusCode == 200) {
         print(response.statusCode);
         if (response != null) {
@@ -172,6 +175,30 @@ class Networks {
       Dio dio = new Dio();
       var head = {"Authorization": "Bearer ${accessToken} "};
       response = await dio.post(ACTIVATE, options: Options(headers: head));
+      print("!!RESPONSE");
+      print(response.toString());
+      print("konul" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        print(response.data);
+      } else {
+        return null;
+      }
+    } catch (exception) {}
+  }
+
+  static dynamic confirmAccount(String mobilePushId, BuildContext context) async {
+    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
+    String accessToken =
+        await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
+    int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
+    String CONFIRM =
+        BASE_URL + "/Users/" + "$userId/MobilePushes/$mobilePushId/Confirm";
+    print(CONFIRM);
+    try {
+      Response response;
+      Dio dio = new Dio();
+      var head = {"Authorization": "Bearer ${accessToken} "};
+      response = await dio.post(CONFIRM, options: Options(headers: head));
       print("!!RESPONSE");
       print(response.toString());
       print("konul" + response.statusCode.toString());

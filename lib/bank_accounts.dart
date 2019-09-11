@@ -20,6 +20,7 @@ class BankAccoquntsState extends State<BankAccountsPage> {
   String _homeScreenText = "Waiting for token...";
   String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
@@ -32,24 +33,29 @@ class BankAccoquntsState extends State<BankAccountsPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              content: ListTile(
-                title: Text(message['notification']['title']),
-                subtitle: Text(message['notification']['body']),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Close')),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Confirm',style: TextStyle(color: Colors.white),),
-                )
-              ],
-            ));
+                  content: ListTile(
+                    title: Text(message['notification']['title']),
+                    subtitle: Text(message['data']['mobilePushId']),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Close')),
+                    RaisedButton(
+                      onPressed: () {
+                        Networks.confirmAccount(
+                            message['data']['mobilePushId'], context);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Confirm',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ));
       },
       onLaunch: (Map<String, dynamic> message) async {
         setState(() {
@@ -78,6 +84,7 @@ class BankAccoquntsState extends State<BankAccountsPage> {
       print(_homeScreenText);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

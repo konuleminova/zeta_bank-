@@ -186,19 +186,24 @@ class Networks {
     } catch (exception) {}
   }
 
-  static dynamic confirmAccount(String mobilePushId, BuildContext context) async {
+  static dynamic confirmAccount(
+      String mobilePushId, BuildContext context) async {
     SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
+    var queryParameters = {
+      'userId': userId,
+    };
     String CONFIRM =
-        BASE_URL + "/Users/" + "$userId/MobilePushes/$mobilePushId/Confirm";
+        BASE_URL + "/Users" + "/MobilePushes/$mobilePushId/Confirm";
     print(CONFIRM);
     try {
       Response response;
       Dio dio = new Dio();
       var head = {"Authorization": "Bearer ${accessToken} "};
-      response = await dio.post(CONFIRM, options: Options(headers: head));
+      response = await dio.post(CONFIRM,
+          options: Options(headers: head), queryParameters: queryParameters);
       print("!!RESPONSE");
       print(response.toString());
       print("konul" + response.statusCode.toString());

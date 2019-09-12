@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:zeta_bank/service/networks.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -223,6 +224,7 @@ class HomeState extends State<HomePage> {
   }
 
   Future onSelectNotification(String payload) async {
+    //Networks.markAsViewed(billId, context);
     Navigator.pushNamed(context, "/my_bills");
   }
 

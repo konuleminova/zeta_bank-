@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:zeta_bank/item/bank_account_item.dart';
 import 'package:zeta_bank/model/bank_accounts.dart';
 import 'package:zeta_bank/service/networks.dart';
@@ -19,43 +20,31 @@ class BankAccoquntsState extends State<BankAccountsPage> {
   int counter = 2;
   String _homeScreenText = "Waiting for token...";
   String _messageText = "Waiting for message...";
+  String title;
+  String mobilePushId;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   void initState() {
     super.initState();
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         setState(() {
           _messageText = "Push Messaging message: $message";
+          title = message['notification']['title'];
+          mobilePushId = message['data']['mobilePushId'];
         });
         print("onMessage: $message");
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  content: ListTile(
-                    title: Text(message['notification']['title']),
-                    subtitle: Text(message['data']['mobilePushId']),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('Close')),
-                    RaisedButton(
-                      onPressed: () {
-                        Networks.confirmAccount(
-                            message['data']['mobilePushId'], context);
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Confirm',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
-                ));
+        _showNotificationWithDefaultSound();
       },
       onLaunch: (Map<String, dynamic> message) async {
         setState(() {
@@ -145,4 +134,48 @@ class BankAccoquntsState extends State<BankAccountsPage> {
   }
 
   getAsunc() async {}
+
+  Future onSelectNotification(String payload) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: ListTile(
+                title: Text(title),
+                subtitle: Text(mobilePushId),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Close')),
+                RaisedButton(
+                  onPressed: () {
+                    Networks.confirmAccount(mobilePushId, context);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Confirm',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ));
+  }
+
+  Future _showNotificationWithDefaultSound() async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      mobilePushId,
+      platformChannelSpecifics,
+      payload: 'Default_Sound',
+    );
+  }
 }

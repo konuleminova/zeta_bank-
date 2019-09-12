@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,46 +11,40 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
-  String counter=null;
+  String counter = null;
   String _homeScreenText = "Waiting for token...";
   String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  String title;
+  String messageBody;
 
   @override
   void initState() {
     super.initState();
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         _messageText = "Push Messaging message: $message";
 
         print(counter);
+        title = message['notification']['title'];
+        messageBody = message['notification']['body'];
+        _showNotificationWithDefaultSound();
         setState(() {
           counter = message['data']['unPaidBillCount'];
-         print(counter);
-        });
 
-//        showDialog(
-//            context: context,
-//            builder: (context) => AlertDialog(
-//              content: ListTile(
-//                title: Text(message['notification']['title']),
-//                subtitle: Text(message['notific']['mobilePushId']),
-//              ),
-//              actions: <Widget>[
-//                FlatButton(
-//                    onPressed: () {
-//                      Navigator.pop(context);
-//                    },
-//                    child: Text('Close')),
-//                RaisedButton(
-//                  onPressed: () {
-//                    Navigator.pop(context);
-//                  },
-//                  child: Text('Confirm',style: TextStyle(color: Colors.white),),
-//                )
-//              ],
-//            ));
+          print(counter);
+        });
       },
       onLaunch: (Map<String, dynamic> message) async {
         setState(() {
@@ -225,5 +220,25 @@ class HomeState extends State<HomePage> {
                 ))
               ],
             )));
+  }
+
+  Future onSelectNotification(String payload) async {
+    Navigator.pushNamed(context, "/my_bills");
+  }
+
+  Future _showNotificationWithDefaultSound() async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      messageBody,
+      platformChannelSpecifics,
+      payload: 'Default_Sound',
+    );
   }
 }

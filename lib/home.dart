@@ -25,41 +25,13 @@ class HomeState extends State<HomePage> {
   void initState() {
     super.initState();
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('app_icon');
+    new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        _messageText = "Push Messaging message: $message";
-
-        print(counter);
-        title = message['notification']['title'];
-        messageBody = message['notification']['body'];
-        _showNotificationWithDefaultSound();
-        setState(() {
-          counter = message['data']['unPaidBillCount'];
-
-          print(counter);
-        });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onResume: $message");
-      },
-    );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
@@ -77,6 +49,35 @@ class HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        _messageText = "Push Messaging message: $message";
+
+        print(_messageText);
+        setState(() {
+          title = message['notification']['title'];
+          messageBody = message['notification']['body'];
+          counter = message['data']['unPaidBillCount'];
+
+          print(counter);
+        });
+        _showNotificationWithDefaultSound();
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        setState(() {
+          _messageText = "Push Messaging message: $message";
+        });
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        setState(() {
+          _messageText = "Push Messaging message: $message";
+        });
+        print("onResume: $message");
+      },
+    );
+
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(

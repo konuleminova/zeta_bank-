@@ -62,7 +62,7 @@ class Networks {
       var head = {"Authorization": "Bearer ${token} "};
       response = await dio.post(CHECK_PIN,
           data: {"otpCode": otpCode}, options: Options(headers: head));
-      print("konul" + response.statusCode.toString());
+      print("CHECK PIN" + response.statusCode.toString());
       if (response.statusCode == 200) {
         if (response != null) {
           Navigator.pushReplacementNamed(context, "/home");
@@ -88,7 +88,7 @@ class Networks {
       Dio dio = new Dio();
       var head = {"Authorization": "Bearer ${accessToken} "};
       response = await dio.get(BANK_ACCOUNTS, options: Options(headers: head));
-      print("konul" + response.statusCode.toString());
+      print("get BANK ACCOUNTS" + response.toString());
       if (response.statusCode == 200) {
         print(response.data);
         return BankAccounts.fromJson(response.data);

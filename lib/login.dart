@@ -137,6 +137,7 @@ class LoginState extends State<LoginPage> {
                               userFocus.unfocus();
                               FocusScope.of(context).requestFocus(passFocus);
                             },
+                            keyboardType: TextInputType.number,
                             onChanged: (value) {
                               passFocus.unfocus();
                               setState(() {
@@ -180,6 +181,7 @@ class LoginState extends State<LoginPage> {
                       Expanded(
                         child: Container(
                           child: TextField(
+                            keyboardType: TextInputType.number,
                               onSubmitted: (value) {
                                 //_controllerPass.text=value;
                                 passFocus.unfocus();

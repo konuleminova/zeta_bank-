@@ -32,10 +32,11 @@ class Networks {
           print("LOGIN!!!" + responseL.accessToken);
           await sharedPrefUtil.setString(
               SharedPrefUtil.accessToken, responseL.accessToken);
-          sharedPrefUtil.setString(SharedPrefUtil.smsOtpId, responseL.smsOtpId);
-          sharedPrefUtil.setString(
-              SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
-          sharedPrefUtil.setInt(SharedPrefUtil.userId, responseL.userId);
+          await sharedPrefUtil.setInt(SharedPrefUtil.userId, responseL.userId);
+        //  await sharedPrefUtil.setString(
+            //  SharedPrefUtil.smsOtpId, responseL.smsOtpId);
+         // sharedPrefUtil.setString(
+          //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(
               builder: (context) => PinCodeScreen(
                     response: responseL,

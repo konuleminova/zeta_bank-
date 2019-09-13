@@ -13,6 +13,7 @@ class Networks {
   static final String BASE_URL = "http://sps.sinam.net/DemoApi";
   static String LOGIN_ENDPOINT = "/Auth/Login/WithoutSmsOtp";
   static String CHECK_ENDPOINT = "/Auth/SmsOtps/";
+  static SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
 
   static dynamic login(String username, String password, String deviceToken,
       BuildContext context) async {
@@ -26,11 +27,10 @@ class Networks {
         "deviceToken": deviceToken
       });
       if (response.statusCode == 200) {
-        print(response.statusCode);
         if (response != null) {
           LoginResponse responseL = LoginResponse.fromJson(response.data);
-          SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
-          sharedPrefUtil.setString(
+          print("LOGIN!!!" + responseL.accessToken);
+          await sharedPrefUtil.setString(
               SharedPrefUtil.accessToken, responseL.accessToken);
           sharedPrefUtil.setString(SharedPrefUtil.smsOtpId, responseL.smsOtpId);
           sharedPrefUtil.setString(
@@ -193,6 +193,7 @@ class Networks {
     String ACTIVATE =
         BASE_URL + "/Users/" + "$userId/BankAccounts/$bankAccountId/Activate";
     print(ACTIVATE);
+    print("ACTIVATEET!!!" + accessToken);
     try {
       Response response;
       Dio dio = new Dio();
@@ -219,7 +220,7 @@ class Networks {
       'userId': userId,
     };
     String CONFIRM =
-        BASE_URL + "/Users" + "/MobilePushes/$mobilePushId/Confirm";
+        BASE_URL + "/Users/$userId" + "/MobilePushes/$mobilePushId/Confirm";
     print(CONFIRM);
     try {
       Response response;

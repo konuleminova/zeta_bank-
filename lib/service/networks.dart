@@ -233,6 +233,7 @@ class Networks {
       print("konul" + response.statusCode.toString());
       if (response.statusCode == 200) {
         print(response.data);
+        Navigator.pushReplacementNamed(context, "/bank_accounts");
       } else {
         return null;
       }

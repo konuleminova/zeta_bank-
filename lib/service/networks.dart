@@ -226,7 +226,10 @@ class Networks {
       response =
           await dio.post(MARK_AS_VIEWED, options: Options(headers: head));
       print("konul" + response.statusCode.toString());
+      print("MARK AS VIEWD");
+      print(response.statusCode);
       if (response.statusCode == 200) {
+        print("200 RESPONSE code");
         print(response.data);
       } else {
         return null;

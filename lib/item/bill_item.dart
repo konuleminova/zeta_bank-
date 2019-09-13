@@ -81,9 +81,10 @@ class BillItemState extends State<BillItemWidget> {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              Networks.payBill(item.id, context);
+                              //Networks.markAsViewed(item.id, context);
+                                 Networks.payBill(item.id, context);
                               setState(() {
-                                item.status="PAIED";
+                                item.status = "PAIED";
                               });
                             },
                             child: Text(
@@ -95,7 +96,7 @@ class BillItemState extends State<BillItemWidget> {
                             onTap: () {
                               Networks.rejectBill(item.id, context);
                               setState(() {
-                                item.status="REJECTED";
+                                item.status = "REJECTED";
                               });
                             },
                             child: Text(

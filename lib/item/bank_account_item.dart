@@ -52,7 +52,9 @@ class BankAccountItemState extends State<BankAccountItemWidget> {
                           Future<dynamic> s =
                               Networks.activateAccount(item.id, context);
                           s.then((on) {
-                            status=on;
+                           setState(() {
+                             status=on;
+                           });
                           });
                         },
                         color: Colors.lightBlue,

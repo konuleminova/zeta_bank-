@@ -28,50 +28,50 @@ class BankAccoquntsState extends State<BankAccountsPage> {
   @override
   void initState() {
     super.initState();
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-          title = message['notification']['title'];
-          mobilePushId = message['data']['mobilePushId'];
-        });
-        print("onMessage: $message");
-        _showNotificationWithDefaultSound();
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      setState(() {
-        _homeScreenText = "Push Messaging token: $token";
-      });
-      print(_homeScreenText);
-    });
+//    var initializationSettingsAndroid =
+//        new AndroidInitializationSettings('app_icon');
+//    var initializationSettingsIOS = new IOSInitializationSettings();
+//    var initializationSettings = new InitializationSettings(
+//        initializationSettingsAndroid, initializationSettingsIOS);
+//    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+//    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+//        onSelectNotification: onSelectNotification);
+//    _firebaseMessaging.configure(
+//      onMessage: (Map<String, dynamic> message) async {
+//        setState(() {
+//          _messageText = "Push Messaging message: $message";
+//          title = message['notification']['title'];
+//          mobilePushId = message['data']['mobilePushId'];
+//        });
+//        print("onMessage: $message");
+//        _showNotificationWithDefaultSound();
+//      },
+//      onLaunch: (Map<String, dynamic> message) async {
+//        setState(() {
+//          _messageText = "Push Messaging message: $message";
+//        });
+//        print("onLaunch: $message");
+//      },
+//      onResume: (Map<String, dynamic> message) async {
+//        setState(() {
+//          _messageText = "Push Messaging message: $message";
+//        });
+//        print("onResume: $message");
+//      },
+//    );
+//    _firebaseMessaging.requestNotificationPermissions(
+//        const IosNotificationSettings(sound: true, badge: true, alert: true));
+//    _firebaseMessaging.onIosSettingsRegistered
+//        .listen((IosNotificationSettings settings) {
+//      print("Settings registered: $settings");
+//    });
+//    _firebaseMessaging.getToken().then((String token) {
+//      assert(token != null);
+//      setState(() {
+//        _homeScreenText = "Push Messaging token: $token";
+//      });
+//      print(_homeScreenText);
+//    });
   }
 
   @override

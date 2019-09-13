@@ -17,21 +17,22 @@ class HomeState extends State<HomePage> {
   String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  var initializationSettings;
 
   String title;
   String messageBody;
+  String mobilePushId;
+  String type;
 
   @override
   void initState() {
     super.initState();
     var initializationSettingsAndroid =
-    new AndroidInitializationSettings('app_icon');
+        new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
+    initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
@@ -53,15 +54,26 @@ class HomeState extends State<HomePage> {
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         _messageText = "Push Messaging message: $message";
-
         print(_messageText);
-        setState(() {
-          title = message['notification']['title'];
-          messageBody = message['notification']['body'];
-          counter = message['data']['unPaidBillCount'];
-
-          print(counter);
-        });
+        type=message['data']['type'];
+        if (message['data']['type'] == "BANK_ACCOUNT_ACTIVATION") {
+          flutterLocalNotificationsPlugin.initialize(initializationSettings,
+              onSelectNotification: onSelectNotification1);
+          setState(() {
+            _messageText = "Push Messaging message: $message";
+            title = message['notification']['title'];
+            mobilePushId = message['data']['mobilePushId'];
+          });
+        }else{
+          flutterLocalNotificationsPlugin.initialize(initializationSettings,
+              onSelectNotification: onSelectNotification2);
+          setState(() {
+            title = message['notification']['title'];
+            messageBody = message['notification']['body'];
+            counter = message['data']['unPaidBillCount'];
+            print(counter);
+          });
+        }
         _showNotificationWithDefaultSound();
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -224,9 +236,37 @@ class HomeState extends State<HomePage> {
             )));
   }
 
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification2(String payload) async {
     //Networks.markAsViewed(billId, context);
     Navigator.pushNamed(context, "/my_bills");
+  }
+
+  Future onSelectNotification1(String payload) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: ListTile(
+                title: Text(title),
+                subtitle: Text(mobilePushId),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Close')),
+                RaisedButton(
+                  onPressed: () {
+                    Networks.confirmAccount(mobilePushId, context);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Confirm',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ));
   }
 
   Future _showNotificationWithDefaultSound() async {
@@ -239,7 +279,7 @@ class HomeState extends State<HomePage> {
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
-      messageBody,
+     type=="BANK_ACCOUNT_ACTIVATION"?mobilePushId:messageBody,
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );

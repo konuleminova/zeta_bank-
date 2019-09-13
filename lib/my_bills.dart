@@ -58,7 +58,42 @@ class MyBillsState extends State<MyBillsPage> {
                   MyBills myBills = snapshot.data;
                   return ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
-                      return BillItemWidget(item: myBills.bills[index]);
+                      return GestureDetector(
+                        child: BillItemWidget(item: myBills.bills[index]),
+                        onTap: () {
+                          Networks.markAsViewed(
+                              myBills.bills[index].id, context);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(myBills.bills[index].category),
+                                  content: Container(
+                                    height: 60,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(myBills.bills[index].status,style: TextStyle(color: Colors.red),),
+                                        Text(myBills.bills[index].description),
+                                        Text(myBills.bills[index].debtAmount.toString()+" AZN"),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    Container(
+                                      child: FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('OK')),
+                                    )
+                                  ],
+                                );
+                              });
+                        },
+                      );
                     },
                     itemCount: myBills.bills.length,
                   );

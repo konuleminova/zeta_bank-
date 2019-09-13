@@ -33,9 +33,9 @@ class Networks {
           await sharedPrefUtil.setString(
               SharedPrefUtil.accessToken, responseL.accessToken);
           await sharedPrefUtil.setInt(SharedPrefUtil.userId, responseL.userId);
-        //  await sharedPrefUtil.setString(
-            //  SharedPrefUtil.smsOtpId, responseL.smsOtpId);
-         // sharedPrefUtil.setString(
+          //  await sharedPrefUtil.setString(
+          //  SharedPrefUtil.smsOtpId, responseL.smsOtpId);
+          // sharedPrefUtil.setString(
           //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(
               builder: (context) => PinCodeScreen(
@@ -158,28 +158,6 @@ class Networks {
     } catch (exception) {}
   }
 
-  static dynamic markAsViewed(int billId, BuildContext context) async {
-    String accessToken =
-        await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
-    int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
-    String MARK_AS_VIEWED =
-        BASE_URL + "/Users/" + "$userId/Bills/$billId/MarkAsViewed";
-
-    try {
-      Response response;
-      Dio dio = new Dio();
-      var head = {"Authorization": "Bearer ${accessToken} "};
-      response =
-          await dio.post(MARK_AS_VIEWED, options: Options(headers: head));
-      print("konul" + response.statusCode.toString());
-      if (response.statusCode == 200) {
-        print(response.data);
-      } else {
-        return null;
-      }
-    } catch (exception) {}
-  }
-
   static dynamic activateAccount(
       int bankAccountId, BuildContext context) async {
     String accessToken =
@@ -228,6 +206,28 @@ class Networks {
       if (response.statusCode == 200) {
         print(response.data);
         Navigator.pushReplacementNamed(context, "/bank_accounts");
+      } else {
+        return null;
+      }
+    } catch (exception) {}
+  }
+
+  static dynamic markAsViewed(int billId, BuildContext context) async {
+    String accessToken =
+        await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
+    int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
+    String MARK_AS_VIEWED =
+        BASE_URL + "/Users/" + "$userId/Bills/$billId/MarkAsViewed";
+
+    try {
+      Response response;
+      Dio dio = new Dio();
+      var head = {"Authorization": "Bearer ${accessToken} "};
+      response =
+          await dio.post(MARK_AS_VIEWED, options: Options(headers: head));
+      print("konul" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        print(response.data);
       } else {
         return null;
       }

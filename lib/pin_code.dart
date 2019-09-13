@@ -34,7 +34,7 @@ class PinState extends State<PinCodeScreen> {
         "Enter PIN",
         style: TextStyle(color: Colors.black87),
       ),
-      codeLength: 1,
+      codeLength: 6,
       correctPin: response.smsOtpCode,
       onCodeSuccess: (code) {
         Networks.checkPin(response.smsOtpId,response.smsOtpCode,
@@ -42,8 +42,8 @@ class PinState extends State<PinCodeScreen> {
       },
       onCodeFail: (code) {
       //  print(code);
-        Networks.checkPin(response.smsOtpId,response.smsOtpCode,
-            response.accessToken, context);
+        //Networks.checkPin(response.smsOtpId,response.smsOtpCode,
+           // response.accessToken, context);
       },
     ));
   }

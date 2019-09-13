@@ -79,7 +79,6 @@ class Networks {
   }
 
   static dynamic getBankAccounts(BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
@@ -100,7 +99,6 @@ class Networks {
   }
 
   static dynamic getMyBills(BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
@@ -121,7 +119,6 @@ class Networks {
   }
 
   static dynamic payBill(int billId, BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
@@ -142,7 +139,6 @@ class Networks {
   }
 
   static dynamic rejectBill(int billId, BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
@@ -163,7 +159,6 @@ class Networks {
   }
 
   static dynamic markAsViewed(int billId, BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
@@ -187,7 +182,6 @@ class Networks {
 
   static dynamic activateAccount(
       int bankAccountId, BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);
@@ -213,7 +207,6 @@ class Networks {
 
   static dynamic confirmAccount(
       String mobilePushId, BuildContext context) async {
-    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
     String accessToken =
         await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
     int userId = await sharedPrefUtil.getInt(SharedPrefUtil.userId);

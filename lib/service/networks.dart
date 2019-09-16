@@ -5,6 +5,7 @@ import 'package:zeta_bank/model/bank_accounts.dart';
 import 'package:zeta_bank/model/login_response.dart';
 import 'package:zeta_bank/model/my_bills.dart';
 import 'package:zeta_bank/pin_code.dart';
+import 'package:zeta_bank/pin_code_new.dart';
 import 'package:zeta_bank/utility/shared_pref_util.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
@@ -38,7 +39,7 @@ class Networks {
           // sharedPrefUtil.setString(
           //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(
-              builder: (context) => PinCodeScreen(
+              builder: (context) => PinCodePage(
                     response: responseL,
                   ));
           print(responseL.toString());

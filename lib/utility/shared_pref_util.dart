@@ -6,6 +6,8 @@ class SharedPrefUtil {
   static String smsOtpId = "sms OTp id";
   static String accessToken = "Access token";
   static String userId = "User id";
+  static String billViwedCount = "Bill viewed item count";
+  static String billNonViwedCount = "Bill nonviewed item count";
   SharedPreferences sharedPreferences;
 
   Future<String> getString(String key) async {

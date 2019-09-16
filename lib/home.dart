@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:zeta_bank/model/my_bills.dart';
 import 'package:zeta_bank/service/networks.dart';
+import 'package:zeta_bank/utility/shared_pref_util.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +20,8 @@ class HomeState extends State<HomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   var initializationSettings;
+  int countViewed = 0;
+  int countNonViewed = 0;
 
   String title;
   String messageBody;
@@ -55,7 +59,7 @@ class HomeState extends State<HomePage> {
         print("onMessage: $message");
         _messageText = "Push Messaging message: $message";
         print(_messageText);
-        type=message['data']['type'];
+        type = message['data']['type'];
         if (message['data']['type'] == "BANK_ACCOUNT_ACTIVATION") {
           flutterLocalNotificationsPlugin.initialize(initializationSettings,
               onSelectNotification: onSelectNotification1);
@@ -64,13 +68,17 @@ class HomeState extends State<HomePage> {
             title = message['notification']['title'];
             mobilePushId = message['data']['mobilePushId'];
           });
-        }else{
+        } else {
           flutterLocalNotificationsPlugin.initialize(initializationSettings,
               onSelectNotification: onSelectNotification2);
           setState(() {
             title = message['notification']['title'];
             messageBody = message['notification']['body'];
             counter = message['data']['unPaidBillCount'];
+            countNonViewed = int.parse(counter) -
+                countViewed -
+                countNonViewed +
+                countNonViewed;
             print(counter);
           });
         }
@@ -195,31 +203,48 @@ class HomeState extends State<HomePage> {
                               ),
                               alignment: Alignment.topRight,
                             ),
-                            counter != null
-                                ? new Positioned(
-                                    right: 0,
-                                    top: 0,
-                                    child: new Container(
-                                      padding: EdgeInsets.all(2),
-                                      decoration: new BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      constraints: BoxConstraints(
-                                        minWidth: 20,
-                                        minHeight: 20,
-                                      ),
-                                      child: Text(
-                                        counter,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  )
-                                : new Container()
+                            new Positioned(
+                              right: 0,
+                              top: 0,
+                              child: new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 20,
+                                    minHeight: 20,
+                                  ),
+                                  child: FutureBuilder(
+                                      future: Networks.getMyBills(context),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          countViewed=0;
+                                          countNonViewed=0;
+                                          MyBills mybills=snapshot.data;
+                                          for (int i = 0; i < mybills.bills.length; i++) {
+                                            if (mybills.bills[i].status == "NEW") {
+                                              if (mybills.bills[i].viewed == 1) {
+                                                countViewed++;
+                                              } else {
+                                                countNonViewed++;
+                                              }
+                                            }
+                                          }
+                                          return Text(
+                                            countNonViewed.toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          );
+                                        } else
+                                          return CircularProgressIndicator();
+                                      })),
+                            )
                           ],
                         ),
                         onTap: () {
@@ -279,9 +304,28 @@ class HomeState extends State<HomePage> {
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
-     type=="BANK_ACCOUNT_ACTIVATION"?mobilePushId:messageBody,
+      type == "BANK_ACCOUNT_ACTIVATION" ? mobilePushId : messageBody,
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );
+  }
+
+ getBillSharedPref() {
+//    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
+//    countViewed = await sharedPrefUtil.getInt(SharedPrefUtil.billViwedCount);
+//    countNonViewed =
+//        await sharedPrefUtil.getInt(SharedPrefUtil.billNonViwedCount);
+    //MyBills myBills= Networks.getMyBills(context);
+    MyBills mybills = new MyBills();
+    //Future<dynamic> bills =
+
+    // SharedPrefUtil sharedprefUtil = new SharedPrefUtil();
+    //   int countViewed;
+    //   int countNonViewed;
+
+    //  await sharedprefUtil.setInt(SharedPrefUtil.billViwedCount, countViewed);
+    // await  sharedprefUtil.setInt(SharedPrefUtil.billNonViwedCount, countNonViewed);
+
+    // return countNonViewed;
   }
 }

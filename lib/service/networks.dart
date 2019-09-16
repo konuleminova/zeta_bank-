@@ -112,6 +112,21 @@ class Networks {
       print("konul" + response.statusCode.toString());
       if (response.statusCode == 200) {
         print(response.data);
+//        MyBills mybills = MyBills.fromJson(response.data);
+//        SharedPrefUtil sharedprefUtil = new SharedPrefUtil();
+//        int countViewed;
+//        int countNonViewed;
+//        for (int i = 0; i < mybills.bills.length; i++) {
+//          if (mybills.bills[i].status == "NEW") {
+//            if (mybills.bills[i].viewed == 0) {
+//              countViewed++;
+//            } else {
+//              countNonViewed++;
+//            }
+//          }
+//        }
+//       await sharedprefUtil.setInt(SharedPrefUtil.billViwedCount, countViewed);
+//      await  sharedprefUtil.setInt(SharedPrefUtil.billNonViwedCount, countNonViewed);
         return MyBills.fromJson(response.data);
       } else {
         return null;

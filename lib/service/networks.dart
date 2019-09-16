@@ -39,7 +39,7 @@ class Networks {
           // sharedPrefUtil.setString(
           //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(
-              builder: (context) => PinCodePage(
+              builder: (context) => PinCodeScreen(
                     response: responseL,
                   ));
           print(responseL.toString());

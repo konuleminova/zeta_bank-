@@ -19,25 +19,24 @@ class PinCodePage extends StatefulWidget {
 
 class PinCodeState extends State<PinCodePage> {
   TextStyle codeTextStyle, keyTextStyle;
-  String smsCode = "";
+  String smsCode="";
   LoginResponse response;
 
   @override
   void initState() {
     super.initState();
     response = widget.response;
-   // smsCode = response.smsOtpCode;
+    // smsCode = response.smsOtpCode;
 
     SmsReceiver receiver = new SmsReceiver();
     receiver.onSmsReceived.listen((SmsMessage msg) {
       setState(() {
-       smsCode = msg.body.substring(6);
-       print("a"+smsCode+"konul");
+        smsCode = msg.body.substring(6);
+        print("a" + smsCode + "konul");
       });
       Networks.checkPin(response.smsOtpId, msg.body.substring(6),
           response.accessToken, context);
     });
-
   }
 
   @override
@@ -56,14 +55,15 @@ class PinCodeState extends State<PinCodePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CodeView(
-              codeTextStyle: codeTextStyle,
-              code: smsCode,
-              obscurePin: false,
-              length: 6),
-          SizedBox(
-            height: 16.0,
-          ),
+          Expanded(
+              child: Align(
+            child: CodeView(
+                codeTextStyle: codeTextStyle,
+                code: smsCode,
+                obscurePin: false,
+                length: 6),
+            alignment: Alignment.center,
+          )),
           CustomKeyboard(
             textStyle: keyTextStyle,
             onPressedKey: (key) {
@@ -73,7 +73,7 @@ class PinCodeState extends State<PinCodePage> {
                 });
               }
               if (smsCode.length == 6) {
-                Networks.checkPin(response.smsOtpId, response.smsOtpCode,
+                Networks.checkPin(response.smsOtpId, smsCode,
                     response.accessToken, context);
               }
             },
@@ -84,7 +84,7 @@ class PinCodeState extends State<PinCodePage> {
                   smsCode = smsCode.substring(0, codeLength - 1);
                 });
             },
-          ),
+          )
         ],
       ),
     ));

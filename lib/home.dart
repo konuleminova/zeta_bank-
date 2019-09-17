@@ -45,9 +45,6 @@ class HomeState extends State<HomePage> {
     });
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
-      setState(() {
-        _homeScreenText = "Push Messaging token: $token";
-      });
       print(_homeScreenText);
     });
   }

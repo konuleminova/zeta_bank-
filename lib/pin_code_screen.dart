@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_view/code_view.dart';
 import 'package:pin_code_view/custom_keyboard.dart';
+import 'package:pin_code_view/pin_code_view.dart';
 import 'package:sms/sms.dart';
 import 'package:zeta_bank/model/login_response.dart';
 import 'package:zeta_bank/service/networks.dart';
+import 'package:zeta_bank/utility/shared_pref_util.dart';
 
 class PinCodeScreen extends StatefulWidget {
   @override
@@ -15,22 +17,17 @@ class PinCodeScreen extends StatefulWidget {
 
 class PinCodeState extends State<PinCodeScreen> {
   TextStyle codeTextStyle, keyTextStyle;
-  String smsCode = "";
+  String pinCode = "1234";
   //LoginResponse response;
 
   @override
   void initState() {
     super.initState();
-    // response = widget.response;
-    // smsCode = response.smsOtpCode;
-
-    SmsReceiver receiver = new SmsReceiver();
-    receiver.onSmsReceived.listen((SmsMessage msg) {
-      setState(() {
-        smsCode = msg.body.substring(6);
-        print("a" + smsCode + "konul");
-      });
-      Networks.checkPin(msg.body.substring(6), context);
+    SharedPrefUtil sharedPrefUtil=new SharedPrefUtil();
+    sharedPrefUtil.getString(SharedPrefUtil.pinCode).then((onValue){
+     setState(() {
+       pinCode=onValue;
+     });
     });
   }
 
@@ -46,39 +43,26 @@ class PinCodeState extends State<PinCodeScreen> {
               colors: [Colors.white, Colors.grey[300]],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-              child: Align(
-            child: CodeView(
-                codeTextStyle: codeTextStyle,
-                code: smsCode,
-                obscurePin: false,
-                length: 6),
-            alignment: Alignment.center,
-          )),
-          CustomKeyboard(
-            textStyle: keyTextStyle,
-            onPressedKey: (key) {
-              if (smsCode.length < 6) {
-                setState(() {
-                  smsCode = smsCode + key;
-                });
-              }
-              if (smsCode.length == 6) {
-                Networks.checkPin(smsCode, context);
-              }
-            },
-            onBackPressed: () {
-              int codeLength = smsCode.length;
-              if (codeLength > 0)
-                setState(() {
-                  smsCode = smsCode.substring(0, codeLength - 1);
-                });
-            },
-          )
-        ],
+      child: PinCode(
+        title: Text(
+          "Enter PIN number",
+          style: TextStyle(color: Colors.blueAccent, fontSize: 25.0),
+        ),
+        subTitle: Text(
+          "Lock Screen",
+          style: TextStyle(color: Colors.blueAccent),
+        ),
+        obscurePin: true,
+        correctPin: pinCode,
+        // to make pin * instead of number
+        codeLength: 4,
+        onCodeSuccess: (code) {
+          print(code);
+          Navigator.pushReplacementNamed(context, "/home");
+        },
+        onCodeFail: (code) {
+          print(code);
+        },
       ),
     );
   }

@@ -8,6 +8,7 @@ class SharedPrefUtil {
   static String userId = "User id";
   static String billViwedCount = "Bill viewed item count";
   static String billNonViwedCount = "Bill nonviewed item count";
+  static String pinCode="Pin Code";
   SharedPreferences sharedPreferences;
 
   Future<String> getString(String key) async {

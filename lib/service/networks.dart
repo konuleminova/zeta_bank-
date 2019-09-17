@@ -16,6 +16,7 @@ class Networks {
   static String CHECK_ENDPOINT = "/Auth/SmsOtps/";
   static SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
 
+
   static dynamic login(String username, String password, String deviceToken,
       BuildContext context) async {
     String LOGIN = BASE_URL + LOGIN_ENDPOINT;
@@ -36,6 +37,7 @@ class Networks {
           await sharedPrefUtil.setInt(SharedPrefUtil.userId, responseL.userId);
            await sharedPrefUtil.setString(
             SharedPrefUtil.smsOtpId, responseL.smsOtpId);
+           await sharedPrefUtil.setString(SharedPrefUtil.pinCode, password);
           // sharedPrefUtil.setString(
           //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(

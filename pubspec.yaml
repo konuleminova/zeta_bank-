@@ -28,7 +28,9 @@ dependencies:
   dio: ^2.1.16
   shared_preferences: ^0.5.3+4
   firebase_messaging: ^5.1.5
-  sms_retriever: ^0.0.2
+  #sms_retriever: ^0.0.2
+  #sms_maintained: ^0.2.5
+  sms: ^0.2.4
   flutter_local_notifications:
 
 

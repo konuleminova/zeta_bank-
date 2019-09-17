@@ -12,7 +12,7 @@ import 'package:dio/dio.dart';
 
 class Networks {
   static final String BASE_URL = "http://sps.sinam.net/DemoApi";
-  static String LOGIN_ENDPOINT = "/Auth/Login/WithoutSmsOtp";
+  static String LOGIN_ENDPOINT = "/Auth/Login";
   static String CHECK_ENDPOINT = "/Auth/SmsOtps/";
   static SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
 
@@ -39,7 +39,7 @@ class Networks {
           // sharedPrefUtil.setString(
           //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(
-              builder: (context) => PinCodeScreen(
+              builder: (context) => PinCodePage(
                     response: responseL,
                   ));
           print(responseL.toString());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_view/code_view.dart';
 import 'package:pin_code_view/custom_keyboard.dart';
+import 'package:sms/sms.dart';
 import 'package:zeta_bank/model/login_response.dart';
 import 'package:zeta_bank/service/networks.dart';
 
@@ -25,7 +26,18 @@ class PinCodeState extends State<PinCodePage> {
   void initState() {
     super.initState();
     response = widget.response;
-    smsCode = response.smsOtpCode;
+   // smsCode = response.smsOtpCode;
+
+    SmsReceiver receiver = new SmsReceiver();
+    receiver.onSmsReceived.listen((SmsMessage msg) {
+      setState(() {
+       smsCode = msg.body.substring(6);
+       print("a"+smsCode+"konul");
+      });
+      Networks.checkPin(response.smsOtpId, msg.body.substring(6),
+          response.accessToken, context);
+    });
+
   }
 
   @override

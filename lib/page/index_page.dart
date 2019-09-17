@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_bank/login.dart';
-import 'package:zeta_bank/pin_code_screen.dart';
+import 'package:zeta_bank/page/login.dart';
+import 'package:zeta_bank/widget/pin_code_screen.dart';
 import 'package:zeta_bank/utility/shared_pref_util.dart';
 
 class IndexPage extends StatefulWidget {

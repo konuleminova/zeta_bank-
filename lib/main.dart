@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:zeta_bank/bank_accounts.dart';
-import 'package:zeta_bank/home.dart';
-import 'package:zeta_bank/index_page.dart';
-import 'package:zeta_bank/login.dart';
-import 'package:zeta_bank/my_bills.dart';
-import 'package:zeta_bank/pin_code_screen.dart';
-import 'package:zeta_bank/pin_code_page.dart';
+import 'package:zeta_bank/page/bank_accounts.dart';
+import 'package:zeta_bank/page/home.dart';
+import 'package:zeta_bank/page/index_page.dart';
+import 'package:zeta_bank/page/login.dart';
+import 'package:zeta_bank/page/my_bills.dart';
+import 'package:zeta_bank/widget/pin_code_screen.dart';
+import 'package:zeta_bank/page/pin_code_page.dart';
 
 void main() => runApp(MyApp());
 

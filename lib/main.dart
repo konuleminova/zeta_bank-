@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:zeta_bank/bank_accounts.dart';
 import 'package:zeta_bank/home.dart';
+import 'package:zeta_bank/index_page.dart';
 import 'package:zeta_bank/login.dart';
 import 'package:zeta_bank/my_bills.dart';
-import 'package:zeta_bank/pin_code_new.dart';
+import 'package:zeta_bank/pin_code_screen.dart';
+import 'package:zeta_bank/pin_code_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:LoginPage(),
+      home:IndexPage(),
       routes: {
         "/login": (context) => LoginPage(),
         "/pincode": (context) => PinCodePage(),

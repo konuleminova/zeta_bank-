@@ -98,8 +98,7 @@ class LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-        body: Container(
+    return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.white, Colors.grey[300]],
@@ -181,7 +180,7 @@ class LoginState extends State<LoginPage> {
                       Expanded(
                         child: Container(
                           child: TextField(
-                            keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               onSubmitted: (value) {
                                 //_controllerPass.text=value;
                                 passFocus.unfocus();
@@ -246,6 +245,6 @@ class LoginState extends State<LoginPage> {
           )
         ],
       ),
-    ));
+    );
   }
 }

@@ -40,8 +40,7 @@ class PinCodeState extends State<PinCodePage> {
         color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold);
     this.keyTextStyle = const TextStyle(color: Colors.black87, fontSize: 25.0);
     // TODO: implement build
-    return Scaffold(
-        body: Container(
+    return  Scaffold(body: Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.white, Colors.grey[300]],
@@ -52,13 +51,13 @@ class PinCodeState extends State<PinCodePage> {
         children: <Widget>[
           Expanded(
               child: Align(
-            child: CodeView(
-                codeTextStyle: codeTextStyle,
-                code: smsCode,
-                obscurePin: false,
-                length: 6),
-            alignment: Alignment.center,
-          )),
+                child: CodeView(
+                    codeTextStyle: codeTextStyle,
+                    code: smsCode,
+                    obscurePin: false,
+                    length: 6),
+                alignment: Alignment.center,
+              )),
           CustomKeyboard(
             textStyle: keyTextStyle,
             onPressedKey: (key) {
@@ -81,6 +80,6 @@ class PinCodeState extends State<PinCodePage> {
           )
         ],
       ),
-    ));
+    ),);
   }
 }

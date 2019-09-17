@@ -309,23 +309,4 @@ class HomeState extends State<HomePage> {
       payload: 'Default_Sound',
     );
   }
-
- getBillSharedPref() {
-//    SharedPrefUtil sharedPrefUtil = new SharedPrefUtil();
-//    countViewed = await sharedPrefUtil.getInt(SharedPrefUtil.billViwedCount);
-//    countNonViewed =
-//        await sharedPrefUtil.getInt(SharedPrefUtil.billNonViwedCount);
-    //MyBills myBills= Networks.getMyBills(context);
-    MyBills mybills = new MyBills();
-    //Future<dynamic> bills =
-
-    // SharedPrefUtil sharedprefUtil = new SharedPrefUtil();
-    //   int countViewed;
-    //   int countNonViewed;
-
-    //  await sharedprefUtil.setInt(SharedPrefUtil.billViwedCount, countViewed);
-    // await  sharedprefUtil.setInt(SharedPrefUtil.billNonViwedCount, countNonViewed);
-
-    // return countNonViewed;
-  }
 }

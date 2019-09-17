@@ -4,7 +4,6 @@ import 'package:zeta_bank/model/bank_account_item.dart';
 import 'package:zeta_bank/model/bank_accounts.dart';
 import 'package:zeta_bank/model/login_response.dart';
 import 'package:zeta_bank/model/my_bills.dart';
-import 'package:zeta_bank/pin_code.dart';
 import 'package:zeta_bank/pin_code_new.dart';
 import 'package:zeta_bank/utility/shared_pref_util.dart';
 import 'package:http/http.dart' as http;
@@ -34,13 +33,12 @@ class Networks {
           await sharedPrefUtil.setString(
               SharedPrefUtil.accessToken, responseL.accessToken);
           await sharedPrefUtil.setInt(SharedPrefUtil.userId, responseL.userId);
-          //  await sharedPrefUtil.setString(
-          //  SharedPrefUtil.smsOtpId, responseL.smsOtpId);
+           await sharedPrefUtil.setString(
+            SharedPrefUtil.smsOtpId, responseL.smsOtpId);
           // sharedPrefUtil.setString(
           //    SharedPrefUtil.smsOtpCode, responseL.smsOtpCode);
           Route route = MaterialPageRoute(
               builder: (context) => PinCodePage(
-                    response: responseL,
                   ));
           print(responseL.toString());
           Navigator.pushReplacement(context, route);
@@ -55,13 +53,15 @@ class Networks {
     } catch (exception) {}
   }
 
-  static dynamic checkPin(String smsOtpId, String otpCode, String token,
-      BuildContext context) async {
+  static dynamic checkPin(String otpCode, BuildContext context) async {
+    String accessToken =
+        await sharedPrefUtil.getString(SharedPrefUtil.accessToken);
+    String smsOtpId = await sharedPrefUtil.getString(SharedPrefUtil.smsOtpId);
     String CHECK_PIN = BASE_URL + CHECK_ENDPOINT + "$smsOtpId/Check";
     try {
       Response response;
       Dio dio = new Dio();
-      var head = {"Authorization": "Bearer ${token} "};
+      var head = {"Authorization": "Bearer ${accessToken} "};
       response = await dio.post(CHECK_PIN,
           data: {"otpCode": otpCode}, options: Options(headers: head));
       print("CHECK PIN" + response.statusCode.toString());

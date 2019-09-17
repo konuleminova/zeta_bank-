@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefUtil {
-  static String isLoginKey = "User has login";
+  static String userHasLogin = "User has login";
   static String smsOtpCode = "sms Code";
   static String smsOtpId = "sms OTp id";
   static String accessToken = "Access token";

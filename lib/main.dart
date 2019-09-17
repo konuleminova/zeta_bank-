@@ -3,7 +3,6 @@ import 'package:zeta_bank/bank_accounts.dart';
 import 'package:zeta_bank/home.dart';
 import 'package:zeta_bank/login.dart';
 import 'package:zeta_bank/my_bills.dart';
-import 'package:zeta_bank/pin_code.dart';
 import 'package:zeta_bank/pin_code_new.dart';
 
 void main() => runApp(MyApp());

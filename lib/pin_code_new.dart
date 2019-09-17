@@ -6,10 +6,6 @@ import 'package:zeta_bank/model/login_response.dart';
 import 'package:zeta_bank/service/networks.dart';
 
 class PinCodePage extends StatefulWidget {
-  LoginResponse response;
-
-  PinCodePage({this.response});
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -19,13 +15,13 @@ class PinCodePage extends StatefulWidget {
 
 class PinCodeState extends State<PinCodePage> {
   TextStyle codeTextStyle, keyTextStyle;
-  String smsCode="";
-  LoginResponse response;
+  String smsCode = "";
+  //LoginResponse response;
 
   @override
   void initState() {
     super.initState();
-    response = widget.response;
+    // response = widget.response;
     // smsCode = response.smsOtpCode;
 
     SmsReceiver receiver = new SmsReceiver();
@@ -34,8 +30,7 @@ class PinCodeState extends State<PinCodePage> {
         smsCode = msg.body.substring(6);
         print("a" + smsCode + "konul");
       });
-      Networks.checkPin(response.smsOtpId, msg.body.substring(6),
-          response.accessToken, context);
+      Networks.checkPin(msg.body.substring(6), context);
     });
   }
 
@@ -73,8 +68,7 @@ class PinCodeState extends State<PinCodePage> {
                 });
               }
               if (smsCode.length == 6) {
-                Networks.checkPin(response.smsOtpId, smsCode,
-                    response.accessToken, context);
+                Networks.checkPin(smsCode, context);
               }
             },
             onBackPressed: () {
